@@ -62,8 +62,9 @@ module Rack
         
         def filtered_backtrace
           @filtered_backtrace ||= @backtrace.map { |l| l.to_s.strip }.select do |line|
-            line.starts_with?(Rails.root) &&
-            !line.starts_with?(Rails.root.join("vendor"))
+            # ruby open id gem, uses a version of starts_with that is not compatible with Path
+            line.starts_with?(Rails.root.to_s) &&
+            !line.starts_with?(Rails.root.join("vendor").to_s)
           end
         end
       end
